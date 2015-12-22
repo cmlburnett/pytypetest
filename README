@@ -70,3 +70,5 @@ So, which is best for you:
 	* Do you care about using temporary variables?
 	* Do you mind spending extra time to convert twice?
 
+See the test() function in typetester/__init__.py for example usage.
+
