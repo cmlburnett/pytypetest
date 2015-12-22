@@ -1,0 +1,60 @@
+typetester -- module for testing if objects are convertable to the given type.
+
+Helper test methods that test if the arguments are convertable to the desired type.
+This does not test if the objects are of the type (e.g., isinstance), but convertable to that type.
+The only way to test this is by calling the constructor on the object.
+
+IsFoo(o) tests if the single object is convertable to type Foo.
+IsFooAll(*objects) tests if the multiple objects are *ALL* convertable to type Foo.
+IsFooAny(*objects) tests if at least one of the multiple objects is convertable to type Foo.
+IsFooCustom(tester, *objects) tests all of the objects and passes the result list to the tester for custom testing.
+
+Note that the builtin methods all() and any() short-circuit and so do IsFooAll and IsFooAny.
+IsFooCustom is not short-circuited as all are tested.
+
+Also note that every type should be convertable to str() and bool() and thus neither of these types are provided.
+
+One last note, this catches *any* exception thrown during creation and results in False.
+
+Motivation: try-except blocks are incompatible with if-elif-else statements, which makes code significantly uglier and necessitates an intermediate variable
+
+	try:
+		v = int(somevalue)
+		isint = True
+	except:
+		v = None
+		isint = False
+
+	if isint:
+		doIfTrue(v)
+	else:
+		doIfFalse()
+
+It is possible to include the logic within the try-except block
+
+	try:
+		v = int(somevalue)
+		doIfTrue(v)
+	except:
+		doIfFalse()
+
+But these two blocks are *NOT* equivalent for any and all code you can put in doIfTrue and doIfFalse.
+You don't understand Python's exception system if you don't know why...
+
+The alternative with typetester:
+
+	import typetester
+
+	if IsInt(somevalue):
+		doIfTrue( int(somevalue) )
+	else:
+		doIfFalse()
+
+The latter approach, however, requires calling int() twice: once for IsInt() and once again later to get the integer value of @somevalue.
+
+So, which is best for you:
+	* Do you need the answer in an if-elif-else block?
+	* Do you care if the exception space overlaps between testing and using the value?
+	* Do you care about using temporary variables?
+	* Do you mind spending extra time to convert twice?
+
