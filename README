@@ -1,5 +1,16 @@
 typetester -- module for testing if objects are convertable to the given type.
 
+Support types:
+* int
+* complex
+* float
+* decimal.Decimal
+* fractions.Fraction
+* uuid.UUID
+* ipaddress.IPv4Address
+* ipaddress.IPv6Address
+* ipaddress.IPv4Address or ipaddress.IPv6Address via ipaddress.ip_address
+
 Helper test methods that test if the arguments are convertable to the desired type.
 This does not test if the objects are of the type (e.g., isinstance), but convertable to that type.
 The only way to test this is by calling the constructor on the object.
