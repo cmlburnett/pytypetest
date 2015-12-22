@@ -398,10 +398,12 @@ def test():
 	assert(IsFloat('2.4'))
 	assert(IsFloatAll('2.4', '10'))
 	assert(IsFloatAny('2.4', 'x', 'j'))
+	assert(IsFloatCustom(FTF, 'x', '2.4', 'j'))
 
 	assert(IsDecimal('2.4'))
 	assert(IsDecimalAll('2.4', '10'))
 	assert(IsDecimalAny('2.4', 'x', 'j'))
+	assert(IsDecimalCustom(FTF, 'x', '2.4', 'j'))
 
 	assert(IsFraction('3/7'))
 	assert(IsFractionAll('3/7', '1/3'))
