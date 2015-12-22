@@ -15,10 +15,11 @@ Helper test methods that test if the arguments are convertable to the desired ty
 This does not test if the objects are of the type (e.g., isinstance), but convertable to that type.
 The only way to test this is by calling the constructor on the object.
 
-IsFoo(o) tests if the single object is convertable to type Foo.
-IsFooAll(*objects) tests if the multiple objects are *ALL* convertable to type Foo.
-IsFooAny(*objects) tests if at least one of the multiple objects is convertable to type Foo.
-IsFooCustom(tester, *objects) tests all of the objects and passes the result list to the tester for custom testing.
+	IsFoo(o) tests if the single object is convertable to type Foo.
+	IsFooAll(*objects) tests if the multiple objects are *ALL* convertable to type Foo.
+	IsFooAny(*objects) tests if at least one of the multiple objects is convertable to type Foo.
+	IsFooCustom(tester, *objects) tests all of the objects and passes the result list to the tester for custom testing.
+	AsFooDefault(o, default) tests if the object is of Foo type, otherwise returns default (converted in the function so it need not be passed in as a Foo type)
 
 Note that the builtin methods all() and any() short-circuit and so do IsFooAll and IsFooAny.
 IsFooCustom is not short-circuited as all are tested.
