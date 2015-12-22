@@ -66,6 +66,7 @@ __all__.extend(['IsComplex','IsComplexAll','IsComplexAny','IsComplexCustom'])
 __all__.extend(['IsFloat','IsFloatAll','IsFloatAny','IsFloatCustom'])
 __all__.extend(['IsDecimal','IsDecimalAll','IsDecimalAny','IsDecimalCustom'])
 __all__.extend(['IsFraction','IsFractionAll','IsFractionAny','IsFractionCustom'])
+__all__.extend(['IsUUID','IsUUIDAll','IsUUIDAny','IsUUIDCustom'])
 __all__.extend(['IsIP','IsIPAll','IsIPAny','IsIPCustom'])
 __all__.extend(['IsIPv4','IsIPv4All','IsIPv4Any','IsIPv4Custom'])
 __all__.extend(['IsIPv6','IsIPv6All','IsIPv6Any','IsIPv6Custom'])
@@ -100,6 +101,12 @@ def IsIntCustom(tester, *objects):
 	"""
 	return TypeTest(int, tester, *objects)
 
+def AsIntDefault(o, default):
+	"""
+	Get object as int, or the default if not convertable to an int.
+	"""
+	return AsDefault(int, o, default)
+
 # --------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------
 # Complex
@@ -127,6 +134,12 @@ def IsComplexCustom(tester, *objects):
 	Test if the arguments is convertable to an complex() and those results pass the custom tester @tester (which takes a single argument that is a list of True or False, one per argument, and in the same order).
 	"""
 	return TypeTest(complex, tester, *objects)
+
+def AsComplexDefault(o, default):
+	"""
+	Get object as complex, or the default if not convertable to an complex.
+	"""
+	return AsDefault(complex, o, default)
 
 # --------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------
@@ -156,6 +169,12 @@ def IsFloatCustom(tester, *objects):
 	"""
 	return TypeTest(float, tester, *objects)
 
+def AsFloatDefault(o, default):
+	"""
+	Get object as float, or the default if not convertable to an float.
+	"""
+	return AsDefault(float, o, default)
+
 # --------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------
 # Decimal
@@ -183,6 +202,12 @@ def IsDecimalCustom(tester, *objects):
 	Test if the arguments is convertable to an decimal.Decimal() and those results pass the custom tester @tester (which takes a single argument that is a list of True or False, one per argument, and in the same order).
 	"""
 	return TypeTest(decimal.Decimal, tester, *objects)
+
+def AsDecimalDefault(o, default):
+	"""
+	Get object as decimal.Decimal, or the default if not convertable to an decimal.Decimal.
+	"""
+	return AsDefault(decimal.Decimal, o, default)
 
 # --------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------
@@ -212,6 +237,12 @@ def IsFractionCustom(tester, *objects):
 	"""
 	return TypeTest(fractions.Fraction, tester, *objects)
 
+def AsFractionDefault(o, default):
+	"""
+	Get object as fractions.Fraction, or the default if not convertable to an fractions.Fraction.
+	"""
+	return AsDefault(fractions.Fraction, o, default)
+
 # --------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------
 # UUID
@@ -239,6 +270,12 @@ def IsUUIDCustom(tester, *objects):
 	Test if the arguments is convertable to an uuid.UUID() and those results pass the custom tester @tester (which takes a single argument that is a list of True or False, one per argument, and in the same order).
 	"""
 	return TypeTest(uuid.UUID, tester, *objects)
+
+def AsUUIDDefault(o, default):
+	"""
+	Get object as uuid.UUID, or the default if not convertable to an uuid.UUID.
+	"""
+	return AsDefault(uuid.UUID, o, default)
 
 # --------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------
@@ -268,6 +305,12 @@ def IsIPCustom(tester, *objects):
 	"""
 	return TypeTest(ipaddress.ip_address, tester, *objects)
 
+def AsIPDefault(o, default):
+	"""
+	Get object as ipaddress.IPv4Address() or ipaddress.IPv6Address(), or the default if not convertable to an ipaddress.IPv4Address() or ipaddress.IPv6Address().
+	"""
+	return AsDefault(ipaddress.ip_address, o, default)
+
 # --------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------
 # IPv4Address
@@ -296,6 +339,12 @@ def IsIPv4Custom(tester, *objects):
 	"""
 	return TypeTest(ipaddress.IPv4Address, tester, *objects)
 
+def AsIPv4Default(o, default):
+	"""
+	Get object as ipaddress.IPv4Address, or the default if not convertable to an ipaddress.IPv4Address.
+	"""
+	return AsDefault(ipaddress.IPv4Address, o, default)
+
 # --------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------
 # IPv6Address
@@ -323,6 +372,12 @@ def IsIPv6Custom(tester, *objects):
 	Test if the arguments is convertable to an ipaddress.IPv6Address() and those results pass the custom tester @tester (which takes a single argument that is a list of True or False, one per argument, and in the same order).
 	"""
 	return TypeTest(ipaddress.IPv6Address, tester, *objects)
+
+def AsIPv6Default(o, default):
+	"""
+	Get object as ipaddress.IPv6Address, or the default if not convertable to an ipaddress.IPv6Address.
+	"""
+	return AsDefault(ipaddress.IPv6Address, o, default)
 
 # --------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------
@@ -365,6 +420,21 @@ def TypeTest(typ, listtest, *objects):
 
 		# Force the function to return a bool
 		return bool(listtest(ret))
+
+def AsDefault(typ, o, default):
+	"""
+	Get object as type @typ, or the default if not convertable to an int.
+	"""
+	# Ensure that default is convertable too
+	try:
+		typ(default)
+	except Exception as e:
+		raise TypeError("Default must be convertable to the intended type (%s), but it is not (%s)" % (typ, type(default))) from e
+
+	try:
+		return typ(o)
+	except:
+		return typ(default)
 
 # --------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------
@@ -429,6 +499,39 @@ def test():
 	assert(IsIPv6All('2001:db8::', '::1'))
 	assert(IsIPv6Any('::1', 'x', 'j'))
 	assert(IsIPv6Custom(FTF, '3/7', '2001:db8::', 'j'))
+
+
+
+	assert(AsIntDefault('2', 1) == 2)
+	assert(AsIntDefault('q', 1) == 1)
+
+	assert(AsComplexDefault('(6+8j)', 1.0) == complex(6,8))
+	assert(AsComplexDefault('q', 1.0) == 1.0)
+
+	assert(AsFloatDefault('8.5', 1.0) == 8.5)
+	assert(AsFloatDefault('q', 1.0) == float(1.0))
+
+	assert(AsDecimalDefault('8.5', 1.0) == 8.5)
+	assert(AsDecimalDefault('q', 1.0) == decimal.Decimal(1.0))
+
+	assert(AsUUIDDefault('12345678123456781234567812345678', '92345678123456781234567812345679') == uuid.UUID('12345678123456781234567812345678'))
+	assert(AsUUIDDefault('q', '12345678123456781234567812345678') == uuid.UUID('12345678123456781234567812345678'))
+
+	assert(AsIPDefault('0.0.0.0', '1.2.3.4') == ipaddress.IPv4Address('0.0.0.0'))
+	assert(AsIPDefault('q', '1.2.3.4') == ipaddress.IPv4Address('1.2.3.4'))
+
+	assert(AsIPv4Default('0.0.0.0', '1.2.3.4') == ipaddress.IPv4Address('0.0.0.0'))
+	assert(AsIPv4Default('q', '1.2.3.4') == ipaddress.IPv4Address('1.2.3.4'))
+
+	assert(AsIPv6Default('::1', '2001:db8::') == ipaddress.IPv6Address('::1'))
+	assert(AsIPv6Default('q', '2001:db8::') == ipaddress.IPv6Address('2001:db8::'))
+
+
+	try:
+		AsIntDefault('2', 'q')
+		assert("Should not reach this point, did not check default as the type")
+	except:
+		pass
 
 	print("All pass")
 
