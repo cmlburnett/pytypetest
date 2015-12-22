@@ -61,15 +61,15 @@ So, which is best for you:
 """
 
 __all__ = ['TypeTest']
-__all__.extend(['IsInt','IsIntAll','IsIntAny','IsIntCustom'])
-__all__.extend(['IsComplex','IsComplexAll','IsComplexAny','IsComplexCustom'])
-__all__.extend(['IsFloat','IsFloatAll','IsFloatAny','IsFloatCustom'])
-__all__.extend(['IsDecimal','IsDecimalAll','IsDecimalAny','IsDecimalCustom'])
-__all__.extend(['IsFraction','IsFractionAll','IsFractionAny','IsFractionCustom'])
-__all__.extend(['IsUUID','IsUUIDAll','IsUUIDAny','IsUUIDCustom'])
-__all__.extend(['IsIP','IsIPAll','IsIPAny','IsIPCustom'])
-__all__.extend(['IsIPv4','IsIPv4All','IsIPv4Any','IsIPv4Custom'])
-__all__.extend(['IsIPv6','IsIPv6All','IsIPv6Any','IsIPv6Custom'])
+__all__.extend(['IsInt','IsIntAll','IsIntAny','IsIntCustom', 'AsIntDefault'])
+__all__.extend(['IsComplex','IsComplexAll','IsComplexAny','IsComplexCustom', 'AsComplexDefault'])
+__all__.extend(['IsFloat','IsFloatAll','IsFloatAny','IsFloatCustom', 'AsFloatDefault'])
+__all__.extend(['IsDecimal','IsDecimalAll','IsDecimalAny','IsDecimalCustom', 'AsDecimalDefault'])
+__all__.extend(['IsFraction','IsFractionAll','IsFractionAny','IsFractionCustom', 'AsFractionDefault'])
+__all__.extend(['IsUUID','IsUUIDAll','IsUUIDAny','IsUUIDCustom', 'AsUUIDDefault'])
+__all__.extend(['IsIP','IsIPAll','IsIPAny','IsIPCustom', 'AsIPDefault'])
+__all__.extend(['IsIPv4','IsIPv4All','IsIPv4Any','IsIPv4Custom', 'AsIPv4Default'])
+__all__.extend(['IsIPv6','IsIPv6All','IsIPv6Any','IsIPv6Custom', 'AsIPv6Default'])
 
 import decimal, fractions, uuid, ipaddress
 
